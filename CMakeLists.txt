@@ -5,13 +5,13 @@ project(creative_interactive_gesture_camera)
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/g2o/cmake_modules/")
-find_package(catkin REQUIRED COMPONENTS pcl_ros cv_bridge roscpp rospy std_msgs image_transport message_generation Eigen)
-find_package(Cholmod REQUIRED)
-FIND_PACKAGE(MRPT REQUIRED base)
+#set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/g2o/cmake_modules/")
+find_package(catkin REQUIRED COMPONENTS pcl_ros cv_bridge roscpp rospy std_msgs image_transport message_generation)
+#find_package(Cholmod REQUIRED)
+#FIND_PACKAGE(MRPT REQUIRED base)
 message("-- MRPT FOUND: " ${MRPT_FOUND})
 message("-- MRPT_LIBRARIES: " ${MRPT_LIBRARIES}) 
-find_package(G2O REQUIRED)
+#find_package(g2o REQUIRED)
 
 set(MY_LIB ${G2O_CORE_LIBRARY} 
     ${G2O_STUFF_LIBRARY}
@@ -21,7 +21,7 @@ set(MY_LIB ${G2O_CORE_LIBRARY}
     ${G2O_SOLVER_DENSE}
     ${G2O_SOLVER_SLAM2D_LINEAR}
     ${G2O_SOLVER_STRUCTURE_ONLY}
-    #${G2O_SOLVER_EIGEN}
+    ${G2O_SOLVER_EIGEN}
     ${G2O_TYPES_DATA}
     ${G2O_TYPES_ICP}
     ${G2O_TYPES_SBA}
@@ -29,8 +29,8 @@ set(MY_LIB ${G2O_CORE_LIBRARY}
     ${G2O_TYPES_SIM3}
     ${G2O_TYPES_SLAM2D}
     ${G2O_TYPES_SLAM3D}
-    ${CHOLMOD_LIBRARIES}  
-    ${MRPT_LIBRARIES}
+#    ${CHOLMOD_LIBRARIES}  
+#    ${MRPT_LIBRARIES}
     )
 
 ## System dependencies are found with CMake's conventions
@@ -149,19 +149,20 @@ add_dependencies(camera_sync beginner_tutorials_generate_message_cpp)
 add_executable(main src/main.cpp src/Sensor.cpp)
 target_link_libraries(main DepthSense  ${catkin_LIBRARIES})
 add_dependencies(main beginner_tutorials_generate_message_cpp)
+add_dependencies(main creative_interactive_gesture_camera_gencpp)
 
-add_executable(SLAM src/SLAM.cpp 
-                     src/poseEstimate.cpp 
-                     src/GraphOptimizer_G2O.cpp 
-                     src/PointCloudDownsampler.cpp
-                     src/FrameRGBD
-                     src/KeyframeLoopDetector.cpp
-                     src/Miscellaneous.cpp
-                     src/VisualFeatureMatcher_Generic.cpp
-                     src/Visual3DRigidTransformationEstimator_RANSAC.cpp
-                     src/ICPPoseRefiner_PCL.cpp)#
-target_link_libraries(SLAM DepthSense ${MY_LIB} ${catkin_LIBRARIES})
-add_dependencies(SLAM beginner_tutorials_generate_message_cpp)
+#add_executable(SLAM src/SLAM.cpp 
+#                     src/poseEstimate.cpp 
+#                     src/GraphOptimizer_G2O.cpp 
+#                     src/PointCloudDownsampler.cpp
+#                     src/FrameRGBD
+#                     src/KeyframeLoopDetector.cpp
+#                     src/Miscellaneous.cpp
+#                     src/VisualFeatureMatcher_Generic.cpp
+#                     src/Visual3DRigidTransformationEstimator_RANSAC.cpp
+#                     src/ICPPoseRefiner_PCL.cpp)#
+#target_link_libraries(SLAM DepthSense ${MY_LIB} ${catkin_LIBRARIES})
+#add_dependencies(SLAM beginner_tutorials_generate_message_cpp)
 
 #add_executable(pairwiseAlignment src/pairwiseAlignment.cpp
 #                                 src/GraphOptimizer_G2O.cpp 
